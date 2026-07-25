@@ -1,56 +1,44 @@
-# Welcome to your Expo app 👋
+# Telas geradas para o App_Musica
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Estrutura pronta pra Expo Router (usa `@/` como alias pra `src/`, igual já
+está configurado no seu `tsconfig.json`).
 
-## Get started
+## Onde colar cada arquivo
 
-1. Install dependencies
+```
+app/
+  _layout.tsx              → substitui o atual (Stack + rota "create" como modal)
+  create.tsx                → tela modal "Criar" (Playlist / Playlist colaborativa / Match)
+  (tabs)/
+    _layout.tsx              → tab bar com Início, Buscar, Sua Biblioteca, Premium, Criar
+    index.tsx                → Início
+    search.tsx                → Buscar
+    library.tsx                → Sua Biblioteca
+    premium.tsx                → Premium
+    create.tsx                → placeholder (não usado, só evita erro de rota)
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+src/
+  components/MiniPlayer.tsx   → barra do player fixa acima da tab bar
+  constants/theme.ts          → cores, espaçamento e raio usados em todas as telas
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Dependência que falta
 
-### Other setup steps
+O `MiniPlayer` usa `expo-image`, que já está nas suas dependências
+(`expo-image` já aparece no `package.json` do dump). Os ícones usam
+`@expo/vector-icons`, que já vem junto do Expo — não precisa instalar nada.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Como a aba "Criar" funciona
 
-## Learn more
+Ela não é uma tela normal: o `listener` no `(tabs)/_layout.tsx` intercepta o
+toque e chama `router.push("/create")`, que abre `app/create.tsx` como modal
+transparente por cima da tela atual — igual ao comportamento das imagens.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Próximos passos sugeridos
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Trocar os placeholders coloridos (View com `backgroundColor`) pelas capas
+  reais dos álbuns/artistas.
+- Conectar os dados mockados (RECENT_ITEMS, LIBRARY_ITEMS, etc.) a uma API
+  ou banco local.
+- Ligar o botão de play do `MiniPlayer` a um player de áudio de verdade
+  (ex: `expo-audio`).
